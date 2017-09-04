@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+cd $1
+Work_Path=$1
+Ari_dir=`pwd`
+cd - &>/dev/null
+function Print_Dir_File() {
+    local Dir_argv New_dir
+    Dir_argv=$1
+    cd ${Dir_argv}
+    judge_num=`echo "Dir_argv"|grep ^/|wc -l`
+    if [ ${judge_num} -gt 0 ];then
+        New_dir=""
+    else
+        New_dir="`pwd`"
+    fi
+    for list in `ls ${New_dir}`
+    do
+        if [ -d ${list} ];then
+            cd ${list}
+            Print_Dir_File ${New_dir}/${list}
+            cd ..
+        else
+            echo "${New_dir}/${list}"|sed -e s#${Ari_dir}#./${Work_Path}#g
+        fi
+    done
+}
+
+Print_Dir_File $1
