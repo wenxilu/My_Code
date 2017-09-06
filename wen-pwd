@@ -1,2 +1,7 @@
 #!/bin/bash
-ls `pwd`/$1
+Input=$1
+if [ -d $Input ];then
+   ls -d `pwd`/$Input 2>/dev/null
+else
+   ls `pwd`/$Input 2>/dev/null
+fi
