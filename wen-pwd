@@ -1,5 +1,14 @@
 #!/bin/bash
 Input=$1
-cd ${Input}
-pwd
+[ -z "${Input}" ]&&{
+   pwd
+   exit 0
+}
+
+if [ -d "${Input}" ];then
+   ls -d `pwd`/"${Input}" 2>/dev/null
+else
+   ls `pwd`/$Input 2>/dev/null
+fi
+
 
