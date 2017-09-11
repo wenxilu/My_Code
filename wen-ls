@@ -9,19 +9,26 @@ fi
 function Print_Dir_File() {
     local Dir_argv
     Dir_argv=$1
-    for list in `ls ${Dir_argv}`
+    # for list in `ls ${Dir_argv}`
+    tree -i -L 1 "${Dir_argv}" |sed '1d'|tac|sed '1,2d'|tac|while read list
     do
-        if [ $Dir_argv == "/" ];then
+        if [ "$Dir_argv" == "/" ];then
            Dir_argv=""
         fi
         num=`echo "$Dir_argv"|grep /$|wc -l`
-        if [ $num -ne 0 ];then
-           Dir_argv=${Dir_argv%?} 
+        if [ "$num" -ne 0 ];then
+           Dir_argv="${Dir_argv%?}"
         fi
-        if [ -d ${Dir_argv}/${list} ];then
-            Print_Dir_File ${Dir_argv}/${list}
+        judge_link=`echo "${list}"|grep " -> "|wc -l`
+        if [ "${judge_link}" == 1 ];then
+           name=`echo "${list}"|awk -F " -> " '{print $1}'`
         else
-            echo "${Dir_argv}/${list}"
+           name=`echo "${list}"`
+        fi
+        if [ -d "${Dir_argv}/${name}" ];then
+            Print_Dir_File "${Dir_argv}/${name}"
+        else
+            echo "${Dir_argv}/${name}"
         fi
     done
 }
