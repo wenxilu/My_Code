@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 Input_Path=$1
-if [ ${#@} -lt 1 ];then
+if [ ${#} -lt 1 ];then
     Input_Path="."
 fi
 
